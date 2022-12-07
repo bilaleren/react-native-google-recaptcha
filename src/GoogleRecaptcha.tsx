@@ -88,7 +88,7 @@ export interface GoogleRecaptchaProps extends GoogleRecaptchaBaseProps {
   /**
    * Override the Modal props.
    */
-  modalProps?: Partial<Omit<ModalProps, 'visible'>>
+  modalProps?: Partial<Omit<ModalProps, 'visible' | 'onRequestClose'>>
 
   /**
    * 	Override the WebView props.
