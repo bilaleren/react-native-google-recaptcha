@@ -1,14 +1,63 @@
 # reCAPTCHA for React Native (Android and iOS)
 
-[![License MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](https://github.com/bilaleren/react-native-google-recaptcha/blob/master/LICENSE)
+[![License MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](https://github.com/bilaleren/react-native-google-recaptcha/blob/master/LICENCE)
 [![npm version](https://img.shields.io/npm/v/react-native-google-recaptcha.svg)](https://www.npmjs.com/package/react-native-google-recaptcha)
 [![npm downloads](https://img.shields.io/npm/dt/react-native-google-recaptcha.svg)](#install)
 
 A reCAPTCHA library for React Native (Android and iOS). Fully tested.
 
-| **Normal** | **Invisible** | **Compact** |
-|-----------------|---------------|-------------|
-|<img src="https://raw.githubusercontent.com/bilaleren/react-native-google-recaptcha/master/screenshots/normal.gif" width="320" height="520">|<img src="https://raw.githubusercontent.com/bilaleren/react-native-google-recaptcha/master/screenshots/invisible.gif" width="320" height="520">|<img src="https://raw.githubusercontent.com/bilaleren/react-native-google-recaptcha/master/screenshots/compact.gif" width="320" height="520">|
+---
+
+A normal widget.
+
+<details open>
+  <summary>
+    <b>Normal</b>
+  </summary>
+  <br />
+  <img
+    alt="Normal"
+    width="320"
+    height="540"
+    src="https://raw.githubusercontent.com/bilaleren/react-native-google-recaptcha/master/screenshots/normal.gif"
+  />
+</details>
+
+---
+
+A invisible widget.
+
+<details>
+  <summary>
+    <b>Invisible</b>
+  </summary>
+  <br />
+  <img
+    alt="Normal"
+    width="320"
+    height="540"
+    src="https://raw.githubusercontent.com/bilaleren/react-native-google-recaptcha/master/screenshots/invisible.gif"
+  />
+</details>
+
+---
+
+A compact widget.
+
+<details>
+  <summary>
+    <b>Compact</b>
+  </summary>
+  <br />
+  <img
+    alt="Normal"
+    width="320"
+    height="540"
+    src="https://raw.githubusercontent.com/bilaleren/react-native-google-recaptcha/master/screenshots/compact.gif"
+  />
+</details>
+
+---
 
 ## Install
 
@@ -93,6 +142,7 @@ import React from 'react'
 import { View, Button } from 'react-native'
 
 import GoogleRecaptcha, {
+  GoogleRecaptchaSize,
   GoogleRecaptchaToken,
   GoogleRecaptchaRefAttributes
 } from 'react-native-google-recaptcha'
@@ -114,6 +164,7 @@ const App: React.FC = () => {
     <View>
       <GoogleRecaptcha
         ref={recaptchaRef}
+        // size={GoogleRecaptchaSize.INVISIBLE}
         baseUrl="http://localhost:3000"
         siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
       />
