@@ -23,7 +23,8 @@ export interface GoogleRecaptchaBaseProps {
   /**
    * The size of the widget.
    * @default normal
-   * @see https://developers.google.com/recaptcha/docs/faq#can-i-customize-the-recaptcha-widget-or-badge
+   * @see https://developers.google.com/recaptcha/docs/display#render_param
+   * @see https://developers.google.com/recaptcha/docs/invisible#render_param
    */
   size?: GoogleRecaptchaSize
 
