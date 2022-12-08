@@ -560,7 +560,7 @@ describe('<GoogleRecaptcha />', () => {
   })
 
   describe('prop: loadingComponent', () => {
-    test('the footerComponent prop should be override', async () => {
+    test('the loadingComponent prop should be override', async () => {
       const { findByText, findByTestId } = await createRecaptchaRenderer({
         loadingComponent: <Text>Custom loading component</Text>
       })
