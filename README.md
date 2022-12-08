@@ -188,7 +188,7 @@ git clone https://github.com/bilaleren/react-native-google-recaptcha.git
 **Then**
 
 ```shell
-yarn install && yarn lint && yarn test
+cd react-native-google-recaptcha && yarn install && yarn lint && yarn test
 ```
 
 ## Props
