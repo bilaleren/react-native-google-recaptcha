@@ -149,7 +149,7 @@ const GoogleRecaptcha = React.forwardRef<
     reject: (reason?: any) => void
   } | null>()
 
-  const isInvisibleSize = size === 'invisible'
+  const invisible = size === 'invisible'
   const { style: webViewStyle, ...webViewOtherProps } = webViewProps
 
   if (!BASE_URL_PATTERN.test(baseUrl)) {
@@ -222,12 +222,12 @@ const GoogleRecaptcha = React.forwardRef<
 
     const webview = webViewRef.current
 
-    if (webview && isInvisibleSize) {
+    if (webview && invisible) {
       webview.injectJavaScript('window.rnRecaptcha.execute();')
     }
 
     setLoading(false)
-  }, [onLoad, isInvisibleSize])
+  }, [onLoad, invisible])
 
   const handleMessage = React.useCallback(
     (event: WebViewMessageEvent) => {
@@ -236,7 +236,7 @@ const GoogleRecaptcha = React.forwardRef<
           event.nativeEvent.data
         ) as GoogleRecaptchaPostMessageData
 
-        if (payload.close && isInvisibleSize) {
+        if (payload.close && invisible) {
           closeModal()
         }
 
@@ -279,10 +279,10 @@ const GoogleRecaptcha = React.forwardRef<
       onError,
       onVerify,
       onExpire,
+      invisible,
       handleLoad,
       closeModal,
-      closeOnExpire,
-      isInvisibleSize
+      closeOnExpire
     ]
   )
 
