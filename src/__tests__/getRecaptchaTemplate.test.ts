@@ -24,13 +24,16 @@ describe('getRecaptchaTemplate()', () => {
       expect(template).toContain(`const siteKey = '${TEST_SITE_KEY}'`)
     })
 
-    it.each(INVALID_SITE_KEYS)('siteKey="%s" should cause an error', (siteKey) => {
-      expect(() => {
-        getRecaptchaTemplate({
-          siteKey
-        })
-      }).toThrow('Invalid siteKey value')
-    })
+    it.each(INVALID_SITE_KEYS)(
+      'siteKey="%s" should cause an error',
+      (siteKey) => {
+        expect(() => {
+          getRecaptchaTemplate({
+            siteKey
+          })
+        }).toThrow('Invalid siteKey value')
+      }
+    )
   })
 
   describe('prop: lang', () => {
@@ -42,7 +45,7 @@ describe('getRecaptchaTemplate()', () => {
       expect(template).toContain('.js?hl=en')
       expect(template).toContain('<html lang="en">')
     })
-    
+
     it.each(VALID_LANG_CODES)('lang="%s" must be valid', (lang) => {
       const template = getRecaptchaTemplate({
         lang,
@@ -53,7 +56,7 @@ describe('getRecaptchaTemplate()', () => {
       expect(template).toContain(`.js?hl=${lang}`)
       expect(template).toContain(`<html lang="${htmlLang}">`)
     })
-    
+
     it.each(INVALID_LANG_CODES)('lang="%s" should cause an error', (lang) => {
       expect(() => {
         getRecaptchaTemplate({
@@ -91,7 +94,7 @@ describe('getRecaptchaTemplate()', () => {
 
       expect(template).toContain("const theme = 'light'")
     })
-    
+
     it.each(RECAPTCHA_THEMES)('theme should be replaced with "%s"', (theme) => {
       const template = getRecaptchaTemplate({
         theme,
@@ -110,15 +113,18 @@ describe('getRecaptchaTemplate()', () => {
 
       expect(template).toContain("const action = ''")
     })
-    
-    it.each(RECAPTCHA_ACTIONS)('action should be replaced with "%s"', (action) => {
-      const template = getRecaptchaTemplate({
-        action,
-        siteKey: TEST_SITE_KEY
-      })
 
-      expect(template).toContain(`const action = '${action}'`)
-    })
+    it.each(RECAPTCHA_ACTIONS)(
+      'action should be replaced with "%s"',
+      (action) => {
+        const template = getRecaptchaTemplate({
+          action,
+          siteKey: TEST_SITE_KEY
+        })
+
+        expect(template).toContain(`const action = '${action}'`)
+      }
+    )
   })
 
   describe('prop: hideBadge', () => {
@@ -184,15 +190,18 @@ describe('getRecaptchaTemplate()', () => {
 
       expect(template).toContain(`https://${CUSTOM_GSTATIC_DOMAIN}`)
     })
-    
-    it.each(INVALID_DOMAINS)('gstaticDomain="%s" should cause an error', (domain) => {
-      expect(() => {
-        getRecaptchaTemplate({
-          siteKey: TEST_SITE_KEY,
-          gstaticDomain: domain
-        })
-      }).toThrow('Invalid gstaticDomain value.')
-    })
+
+    it.each(INVALID_DOMAINS)(
+      'gstaticDomain="%s" should cause an error',
+      (domain) => {
+        expect(() => {
+          getRecaptchaTemplate({
+            siteKey: TEST_SITE_KEY,
+            gstaticDomain: domain
+          })
+        }).toThrow('Invalid gstaticDomain value.')
+      }
+    )
   })
 
   describe('prop: recaptchaDomain', () => {
@@ -212,14 +221,17 @@ describe('getRecaptchaTemplate()', () => {
 
       expect(template).toContain(`https://${CUSTOM_RECAPTCHA_DOMAIN}/recaptcha`)
     })
-    
-    it.each(INVALID_DOMAINS)('recaptchaDomain="%s" should cause an error', (domain) => {
-      expect(() => {
-        getRecaptchaTemplate({
-          siteKey: TEST_SITE_KEY,
-          recaptchaDomain: domain
-        })
-      }).toThrow('Invalid recaptchaDomain value.')
-    })
+
+    it.each(INVALID_DOMAINS)(
+      'recaptchaDomain="%s" should cause an error',
+      (domain) => {
+        expect(() => {
+          getRecaptchaTemplate({
+            siteKey: TEST_SITE_KEY,
+            recaptchaDomain: domain
+          })
+        }).toThrow('Invalid recaptchaDomain value.')
+      }
+    )
   })
 })

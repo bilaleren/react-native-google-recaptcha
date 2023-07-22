@@ -214,24 +214,30 @@ describe('<GoogleRecaptcha />', () => {
       expect(html).toContain('.js?hl=en')
       expect(html).toContain('<html lang="en">')
     })
-    
-    it.each(VALID_LANG_CODES)('lang="%s" must be valid', async (lang: string) => {
-      const { webview } = await createRecaptchaRenderer({ lang })
-      const html = webview?.props?.source?.html
-      const htmlLang = lang.split('-')[0]
 
-      expect(html).toBeTruthy()
-      expect(html).toContain(`.js?hl=${lang}`)
-      expect(html).toContain(`<html lang="${htmlLang}">`)
-    })
+    it.each(VALID_LANG_CODES)(
+      'lang="%s" must be valid',
+      async (lang: string) => {
+        const { webview } = await createRecaptchaRenderer({ lang })
+        const html = webview?.props?.source?.html
+        const htmlLang = lang.split('-')[0]
 
-    it.each(INVALID_LANG_CODES)('lang="%s" should cause an error', async (lang: string) => {
-      const renderer = async () => {
-        await createRecaptchaRenderer({ lang })
+        expect(html).toBeTruthy()
+        expect(html).toContain(`.js?hl=${lang}`)
+        expect(html).toContain(`<html lang="${htmlLang}">`)
       }
+    )
 
-      await expect(renderer()).rejects.toThrow('Invalid lang value')
-    })
+    it.each(INVALID_LANG_CODES)(
+      'lang="%s" should cause an error',
+      async (lang: string) => {
+        const renderer = async () => {
+          await createRecaptchaRenderer({ lang })
+        }
+
+        await expect(renderer()).rejects.toThrow('Invalid lang value')
+      }
+    )
   })
 
   describe('prop: size', () => {
@@ -243,13 +249,16 @@ describe('<GoogleRecaptcha />', () => {
       expect(html).toContain("const size = 'normal'")
     })
 
-    it.each(RECAPTCHA_SIZES)('size should be replaced with "%s"', async (size) => {
-      const { webview } = await createRecaptchaRenderer({ size })
-      const html = webview?.props?.source?.html
+    it.each(RECAPTCHA_SIZES)(
+      'size should be replaced with "%s"',
+      async (size) => {
+        const { webview } = await createRecaptchaRenderer({ size })
+        const html = webview?.props?.source?.html
 
-      expect(html).toBeTruthy()
-      expect(html).toContain(`const size = '${size}'`)
-    })
+        expect(html).toBeTruthy()
+        expect(html).toContain(`const size = '${size}'`)
+      }
+    )
   })
 
   describe('prop: theme', () => {
@@ -260,14 +269,17 @@ describe('<GoogleRecaptcha />', () => {
       expect(html).toBeTruthy()
       expect(html).toContain("const theme = 'light'")
     })
-    
-    it.each(RECAPTCHA_THEMES)('theme should be replaced with "%s"', async (theme) => {
-      const { webview } = await createRecaptchaRenderer({ theme })
-      const html = webview?.props?.source?.html
 
-      expect(html).toBeTruthy()
-      expect(html).toContain(`const theme = '${theme}'`)
-    })
+    it.each(RECAPTCHA_THEMES)(
+      'theme should be replaced with "%s"',
+      async (theme) => {
+        const { webview } = await createRecaptchaRenderer({ theme })
+        const html = webview?.props?.source?.html
+
+        expect(html).toBeTruthy()
+        expect(html).toContain(`const theme = '${theme}'`)
+      }
+    )
   })
 
   describe('prop: action', () => {
@@ -278,14 +290,17 @@ describe('<GoogleRecaptcha />', () => {
       expect(html).toBeTruthy()
       expect(html).toContain("const action = ''")
     })
-    
-    it.each(RECAPTCHA_ACTIONS)('action should be replaced with "%s"', async (action: string) => {
-      const { webview } = await createRecaptchaRenderer({ action })
-      const html = webview?.props?.source?.html
 
-      expect(html).toBeTruthy()
-      expect(html).toContain(`const action = '${action}'`)
-    })
+    it.each(RECAPTCHA_ACTIONS)(
+      'action should be replaced with "%s"',
+      async (action: string) => {
+        const { webview } = await createRecaptchaRenderer({ action })
+        const html = webview?.props?.source?.html
+
+        expect(html).toBeTruthy()
+        expect(html).toContain(`const action = '${action}'`)
+      }
+    )
   })
 
   describe('prop: hideBadge', () => {
@@ -354,14 +369,17 @@ describe('<GoogleRecaptcha />', () => {
       expect(html).toBeTruthy()
       expect(html).toContain(`https://${CUSTOM_GSTATIC_DOMAIN}`)
     })
-    
-    it.each(INVALID_DOMAINS)('gstaticDomain="%s" should cause an error', async (domain) => {
-      const renderer = async () => {
-        await createRecaptchaRenderer({ gstaticDomain: domain })
-      }
 
-      await expect(renderer()).rejects.toThrow('Invalid gstaticDomain value')
-    })
+    it.each(INVALID_DOMAINS)(
+      'gstaticDomain="%s" should cause an error',
+      async (domain) => {
+        const renderer = async () => {
+          await createRecaptchaRenderer({ gstaticDomain: domain })
+        }
+
+        await expect(renderer()).rejects.toThrow('Invalid gstaticDomain value')
+      }
+    )
   })
 
   describe('prop: recaptchaDomain', () => {
@@ -382,16 +400,19 @@ describe('<GoogleRecaptcha />', () => {
       expect(html).toBeTruthy()
       expect(html).toContain(`https://${CUSTOM_RECAPTCHA_DOMAIN}/recaptcha`)
     })
-    
-    it.each(INVALID_DOMAINS)('recaptchaDomain="%s" should cause an error', async (domain) => {
-      const renderer = async () => {
-        await createRecaptchaRenderer({ recaptchaDomain: domain })
-      }
 
-      await expect(renderer()).rejects.toThrow(
-        'Invalid recaptchaDomain value'
-      )
-    })
+    it.each(INVALID_DOMAINS)(
+      'recaptchaDomain="%s" should cause an error',
+      async (domain) => {
+        const renderer = async () => {
+          await createRecaptchaRenderer({ recaptchaDomain: domain })
+        }
+
+        await expect(renderer()).rejects.toThrow(
+          'Invalid recaptchaDomain value'
+        )
+      }
+    )
   })
 
   describe('prop: baseUrl', () => {
@@ -403,7 +424,7 @@ describe('<GoogleRecaptcha />', () => {
 
       expect(webview?.props).toHaveProperty('source.baseUrl', baseUrl)
     })
-    
+
     it.each(VALID_BASE_URLS)('baseUrl="%s" must be valid', async (baseUrl) => {
       const { container } = await createRecaptchaRenderer({ baseUrl })
       expect(container).toBeTruthy()
@@ -423,14 +444,17 @@ describe('<GoogleRecaptcha />', () => {
         })
       )
     })
-    
-    it.each(INVALID_SITE_KEYS)('siteKey="%S" should cause an error', async (siteKey) => {
-      const renderer = async () => {
-        await createRecaptchaRenderer({ siteKey })
-      }
 
-      await expect(renderer()).rejects.toThrow('Invalid siteKey value')
-    })
+    it.each(INVALID_SITE_KEYS)(
+      'siteKey="%S" should cause an error',
+      async (siteKey) => {
+        const renderer = async () => {
+          await createRecaptchaRenderer({ siteKey })
+        }
+
+        await expect(renderer()).rejects.toThrow('Invalid siteKey value')
+      }
+    )
   })
 
   describe('prop: modalProps', () => {
@@ -562,45 +586,51 @@ describe('<GoogleRecaptcha />', () => {
   })
 
   describe('prop: onClose', () => {
-    it.each(VISIBLE_SIZES)('should not fire onClose event when size="%s"', async (size) => {
-      const handleClose = jest.fn()
-      const { webview } = await createRecaptchaRenderer({
-        size,
-        onClose: handleClose
-      })
+    it.each(VISIBLE_SIZES)(
+      'should not fire onClose event when size="%s"',
+      async (size) => {
+        const handleClose = jest.fn()
+        const { webview } = await createRecaptchaRenderer({
+          size,
+          onClose: handleClose
+        })
 
-      await waitFor(() => {
-        fireEvent(
-          webview!,
-          'message',
-          createNativeEvent({
-            close: []
-          })
-        )
-      })
+        await waitFor(() => {
+          fireEvent(
+            webview!,
+            'message',
+            createNativeEvent({
+              close: []
+            })
+          )
+        })
 
-      expect(handleClose).not.toBeCalled()
-    })
-    
-    it.each(INVISIBLE_SIZES)('should fire onClose event when size="%s"', async (size) => {
-      const handleClose = jest.fn()
-      const { webview } = await createRecaptchaRenderer({
-        size,
-        onClose: handleClose
-      })
+        expect(handleClose).not.toBeCalled()
+      }
+    )
 
-      await waitFor(() => {
-        fireEvent(
-          webview!,
-          'message',
-          createNativeEvent({
-            close: []
-          })
-        )
-      })
+    it.each(INVISIBLE_SIZES)(
+      'should fire onClose event when size="%s"',
+      async (size) => {
+        const handleClose = jest.fn()
+        const { webview } = await createRecaptchaRenderer({
+          size,
+          onClose: handleClose
+        })
 
-      expect(handleClose).toBeCalledTimes(1)
-    })
+        await waitFor(() => {
+          fireEvent(
+            webview!,
+            'message',
+            createNativeEvent({
+              close: []
+            })
+          )
+        })
+
+        expect(handleClose).toBeCalledTimes(1)
+      }
+    )
   })
 
   describe('prop: onLoad', () => {
