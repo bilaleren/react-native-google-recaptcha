@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {
   View,
   Modal,
@@ -93,7 +93,15 @@ export interface GoogleRecaptchaProps extends GoogleRecaptchaBaseProps {
   /**
    * 	Override the WebView props.
    */
-  webViewProps?: Partial<Omit<WebViewProps, 'source' | 'onMessage'>>
+  webViewProps?: Partial<
+    Omit<
+      WebViewProps,
+      | 'source'
+      | 'onMessage'
+      | 'onNavigationStateChange'
+      | 'onShouldStartLoadWithRequest'
+    >
+  >
 
   /**
    * A component to render on top of Modal.
@@ -314,21 +322,9 @@ const GoogleRecaptcha = React.forwardRef<
     [webViewStyle]
   )
 
-  const renderLoading = () => {
-    if (!loading && source) {
-      return null
-    }
-
-    return (
-      <View style={styles.loadingContainer} testID="loading-component">
-        {loadingComponent || <ActivityIndicator size="large" />}
-      </View>
-    )
-  }
-
   return (
     <Modal
-      transparent
+      transparent={true}
       {...modalProps}
       testID="recaptcha-modal"
       visible={visible}
@@ -340,16 +336,20 @@ const GoogleRecaptcha = React.forwardRef<
         bounces={false}
         originWhitelist={ORIGIN_WHITELIST}
         allowsBackForwardNavigationGestures={false}
-        onNavigationStateChange={handleNavigationStateChange}
-        onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
         {...webViewOtherProps}
         source={source}
         style={webViewStyles}
         onMessage={handleMessage}
         testID="recaptcha-webview"
+        onNavigationStateChange={handleNavigationStateChange}
+        onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
       />
       {footerComponent}
-      {renderLoading()}
+      {loading && (
+        <View style={styles.loadingContainer} testID="loading-component">
+          {loadingComponent || <ActivityIndicator size="large" />}
+        </View>
+      )}
     </Modal>
   )
 })

@@ -1,8 +1,12 @@
 # reCAPTCHA for React Native (Android and iOS)
 
-[![License MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](https://github.com/bilaleren/react-native-google-recaptcha/blob/master/LICENCE)
-[![npm version](https://img.shields.io/npm/v/react-native-google-recaptcha.svg)](https://www.npmjs.com/package/react-native-google-recaptcha)
-[![npm downloads](https://img.shields.io/npm/dt/react-native-google-recaptcha.svg)](#install)
+![](https://badgen.net/npm/license/react-native-google-recaptcha)
+[![](https://img.shields.io/npm/v/react-native-google-recaptcha.svg)](https://www.npmjs.com/package/react-native-google-recaptcha)
+![](https://badgen.net/packagephobia/install/react-native-google-recaptcha)
+![](https://badgen.net/bundlephobia/min/react-native-google-recaptcha)
+![](https://badgen.net/bundlephobia/minzip/react-native-google-recaptcha)
+![](https://badgen.net/npm/dw/react-native-google-recaptcha)
+![](https://badgen.net/npm/dm/react-native-google-recaptcha)
 
 A reCAPTCHA library for React Native (Android and iOS). Fully tested.
 

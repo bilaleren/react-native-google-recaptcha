@@ -1,6 +1,6 @@
 {
   "name": "react-native-google-recaptcha",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A reCAPTCHA library for React Native (Android and iOS).",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -17,7 +17,7 @@
   "scripts": {
     "test": "LANG='en_US.UTF-8' jest",
     "test:watch": "yarn test --watchAll",
-    "prebuild": "yarn lint && rm -rf dist",
+    "prebuild": "yarn test && yarn lint && rm -rf dist",
     "build": "NODE_ENV=production rollup -c --bundleConfigAsCjs",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "lint": "tsc --noEmit && eslint ./src --ext .ts,.tsx",
