@@ -37,11 +37,11 @@ export interface GoogleRecaptchaRefAttributes {
   getToken(): Promise<GoogleRecaptchaToken>
 }
 
-interface GoogleRecaptchaPostMessageData {
-  load?: undefined
-  close?: undefined
+interface GoogleRecaptchaPostMessagePayload {
+  load?: unknown
+  close?: unknown
   error?: [unknown]
-  expire?: undefined
+  expire?: unknown
   verify?: [string | null]
 }
 
@@ -161,7 +161,7 @@ const GoogleRecaptcha = React.forwardRef<
   const { style: webViewStyle, ...webViewOtherProps } = webViewProps
 
   if (!BASE_URL_PATTERN.test(baseUrl)) {
-    throw new Error('Invalid baseUrl value. baseUrl must be url.')
+    throw new TypeError('Invalid baseUrl value. baseUrl must be url.')
   }
 
   const html = React.useMemo(() => {
@@ -226,9 +226,9 @@ const GoogleRecaptcha = React.forwardRef<
   )
 
   const handleLoad = React.useCallback(() => {
-    onLoad?.()
-
     const webview = webViewRef.current
+
+    onLoad?.()
 
     if (webview && invisible) {
       webview.injectJavaScript('window.rnRecaptcha.execute();')
@@ -242,7 +242,7 @@ const GoogleRecaptcha = React.forwardRef<
       try {
         const payload = JSON.parse(
           event.nativeEvent.data
-        ) as GoogleRecaptchaPostMessageData
+        ) as GoogleRecaptchaPostMessagePayload
 
         if (payload.close && invisible) {
           closeModal()

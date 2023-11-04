@@ -22,25 +22,25 @@ function getRecaptchaTemplate(props: GoogleRecaptchaBaseProps): string {
   const langMatches = LANG_PATTERN.exec(lang)
 
   if (!langMatches || langMatches.length < 2) {
-    throw new Error(`Invalid lang value. Validity pattern: ${LANG_PATTERN}`)
+    throw new TypeError(`Invalid lang value. Validity pattern: ${LANG_PATTERN}`)
   }
 
   htmlLang = langMatches[1]
 
   if (!SITE_KEY_PATTERN.test(siteKey)) {
-    throw new Error(
+    throw new TypeError(
       `Invalid siteKey value. Validity pattern: ${SITE_KEY_PATTERN}`
     )
   }
 
   if (!DOMAIN_PATTERN.test(gstaticDomain)) {
-    throw new Error(
+    throw new TypeError(
       `Invalid gstaticDomain value. Validity pattern: ${DOMAIN_PATTERN}`
     )
   }
 
   if (!DOMAIN_PATTERN.test(recaptchaDomain)) {
-    throw new Error(
+    throw new TypeError(
       `Invalid recaptchaDomain value. Validity pattern: ${DOMAIN_PATTERN}`
     )
   }

@@ -68,13 +68,13 @@ A compact widget.
 ### Install the module
 
 ```bash
-yarn add react-native-webview react-native-google-recaptcha
+yarn add react-native-google-recaptcha
 ```
 
 Or
 
 ```bash
-npm i react-native-webview react-native-google-recaptcha
+npm i react-native-google-recaptcha
 ```
 
 See the [`react-native-webview` Getting Started Guide](https://github.com/react-native-community/react-native-webview/blob/master/docs/Getting-Started.md).

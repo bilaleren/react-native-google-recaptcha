@@ -1,6 +1,6 @@
 {
   "name": "react-native-google-recaptcha",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A reCAPTCHA library for React Native (Android and iOS).",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -23,6 +23,9 @@
     "lint": "tsc --noEmit && eslint ./src --ext .ts,.tsx",
     "package:install": "./prepare-package.sh --install",
     "package:uninstall": "./prepare-package.sh --uninstall"
+  },
+  "dependencies": {
+    "react-native-webview": "^10.0.0"
   },
   "peerDependencies": {
     "@babel/runtime": ">=7.0.0",
