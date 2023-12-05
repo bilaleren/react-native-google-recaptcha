@@ -1,26 +1,21 @@
-import path from 'path'
-import dts from 'rollup-plugin-dts'
-import typescript from 'rollup-plugin-ts'
-import externals from 'rollup-plugin-node-externals'
-
-const distDir = path.resolve(__dirname, 'dist')
-const sourceDir = path.resolve(__dirname, 'src')
-
+const typescript = require('rollup-plugin-ts')
+const { default: dts } = require('rollup-plugin-dts')
+const externals = require('rollup-plugin-node-externals')
 /**
- * @type {import('rollup').RollupOptions}
+ * @type {Array<import('rollup').RollupOptions>}
  */
-export default [
+const config = [
   {
-    input: path.join(sourceDir, 'index.ts'),
+    input: './src/index.ts',
     output: {
-      file: path.join(distDir, 'index.js'),
+      file: './dist/index.js',
       format: 'es'
     },
     plugins: [
       externals({
         deps: true,
-        peerDeps: true,
-        devDeps: true
+        devDeps: true,
+        peerDeps: true
       }),
       typescript({
         transpiler: 'babel'
@@ -28,11 +23,13 @@ export default [
     ]
   },
   {
-    input: path.join(sourceDir, 'index.ts'),
+    input: './src/index.ts',
     output: {
-      file: path.join(distDir, 'index.d.ts'),
+      file: './dist/index.d.ts',
       format: 'es'
     },
-    plugins: [dts.default()],
+    plugins: [dts()]
   }
 ]
+
+export default config

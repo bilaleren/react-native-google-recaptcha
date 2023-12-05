@@ -10,6 +10,7 @@ import { render, waitFor, fireEvent } from '@testing-library/react-native'
 import {
   TEST_SITE_KEY,
   VISIBLE_SIZES,
+  VALID_DOMAINS,
   INVISIBLE_SIZES,
   VALID_BASE_URLS,
   RECAPTCHA_SIZES,
@@ -20,10 +21,9 @@ import {
   RECAPTCHA_ACTIONS,
   INVALID_LANG_CODES,
   BADGE_HIDDEN_STYLE,
-  ENTERPRISE_MATCHERS,
-  CUSTOM_GSTATIC_DOMAIN,
-  CUSTOM_RECAPTCHA_DOMAIN
+  ENTERPRISE_MATCHERS
 } from './test.constants'
+import { DEFAULT_GSTATIC_DOMAIN, DEFAULT_RECAPTCHA_DOMAIN } from '../constants'
 
 const createNativeEvent = (data: any) => ({
   nativeEvent: {
@@ -352,23 +352,26 @@ describe('<GoogleRecaptcha />', () => {
   })
 
   describe('prop: gstaticDomain', () => {
-    it('the default gstaticDomain must be "www.gstatic.com"', async () => {
+    it(`the default gstaticDomain must be "${DEFAULT_GSTATIC_DOMAIN}"`, async () => {
       const { webview } = await createRecaptchaRenderer()
       const html = webview?.props?.source?.html
 
       expect(html).toBeTruthy()
-      expect(html).toContain('https://www.gstatic.com')
+      expect(html).toContain(`https://${DEFAULT_GSTATIC_DOMAIN}`)
     })
 
-    it(`gstaticDomain should be replaced with "${CUSTOM_GSTATIC_DOMAIN}"`, async () => {
-      const { webview } = await createRecaptchaRenderer({
-        gstaticDomain: CUSTOM_GSTATIC_DOMAIN
-      })
-      const html = webview?.props?.source?.html
+    it.each(VALID_DOMAINS)(
+      'gstaticDomain should be replaced with "%s"',
+      async (domain) => {
+        const { webview } = await createRecaptchaRenderer({
+          gstaticDomain: domain
+        })
+        const html = webview?.props?.source?.html
 
-      expect(html).toBeTruthy()
-      expect(html).toContain(`https://${CUSTOM_GSTATIC_DOMAIN}`)
-    })
+        expect(html).toBeTruthy()
+        expect(html).toContain(`https://${domain}`)
+      }
+    )
 
     it.each(INVALID_DOMAINS)(
       'gstaticDomain="%s" should cause an error',
@@ -383,23 +386,26 @@ describe('<GoogleRecaptcha />', () => {
   })
 
   describe('prop: recaptchaDomain', () => {
-    it('the default recaptchaDomain must be "www.google.com"', async () => {
+    it(`the default recaptchaDomain must be "${DEFAULT_RECAPTCHA_DOMAIN}"`, async () => {
       const { webview } = await createRecaptchaRenderer()
       const html = webview?.props?.source?.html
 
       expect(html).toBeTruthy()
-      expect(html).toContain('https://www.google.com/recaptcha')
+      expect(html).toContain(`https://${DEFAULT_RECAPTCHA_DOMAIN}/recaptcha`)
     })
 
-    it(`recaptchaDomain should be replaced with "${CUSTOM_RECAPTCHA_DOMAIN}"`, async () => {
-      const { webview } = await createRecaptchaRenderer({
-        recaptchaDomain: CUSTOM_RECAPTCHA_DOMAIN
-      })
-      const html = webview?.props?.source?.html
+    it.each(VALID_DOMAINS)(
+      'recaptchaDomain should be replaced with "%s"',
+      async (domain) => {
+        const { webview } = await createRecaptchaRenderer({
+          recaptchaDomain: domain
+        })
+        const html = webview?.props?.source?.html
 
-      expect(html).toBeTruthy()
-      expect(html).toContain(`https://${CUSTOM_RECAPTCHA_DOMAIN}/recaptcha`)
-    })
+        expect(html).toBeTruthy()
+        expect(html).toContain(`https://${domain}/recaptcha`)
+      }
+    )
 
     it.each(INVALID_DOMAINS)(
       'recaptchaDomain="%s" should cause an error',

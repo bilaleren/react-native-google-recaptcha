@@ -4,7 +4,7 @@ import type {
   GoogleRecaptchaActionName
 } from './constants'
 
-export type GoogleRecaptchaToken = string | null
+export type GoogleRecaptchaToken = string | null | undefined
 
 export interface GoogleRecaptchaBaseProps {
   /**

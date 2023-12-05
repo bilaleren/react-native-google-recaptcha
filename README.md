@@ -68,13 +68,13 @@ A compact widget.
 ### Install the module
 
 ```bash
-yarn add react-native-google-recaptcha
+yarn add react-native-webview react-native-google-recaptcha
 ```
 
 Or
 
 ```bash
-npm i react-native-google-recaptcha
+npm i react-native-webview react-native-google-recaptcha
 ```
 
 See the [`react-native-webview` Getting Started Guide](https://github.com/react-native-community/react-native-webview/blob/master/docs/Getting-Started.md).
@@ -87,6 +87,8 @@ import GoogleRecaptcha, {
   GoogleRecaptchaSize, // Size enum: such GoogleRecaptchaSize.INVISIBLE
   GoogleRecaptchaTheme, // Theme enum: such GoogleRecaptchaTheme.DARK
   GoogleRecaptchaActionName, // Action name enum: such GoogleRecaptchaActionName.LOGIN
+  DEFAULT_GSTATIC_DOMAIN,
+  DEFAULT_RECAPTCHA_DOMAIN,
   // Types (only typescript)
   GoogleRecaptchaToken,
   GoogleRecaptchaProps,
@@ -97,7 +99,7 @@ import GoogleRecaptcha, {
 
 ## Usage
 
-With sync onVerify:
+With callback `onVerify()` method:
 
 ```tsx
 import React from 'react'
@@ -139,7 +141,7 @@ const App: React.FC = () => {
 }
 ```
 
-With async getToken():
+With async `getToken()` method:
 
 ```tsx
 import React from 'react'

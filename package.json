@@ -1,6 +1,6 @@
 {
   "name": "react-native-google-recaptcha",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A reCAPTCHA library for React Native (Android and iOS).",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -15,23 +15,22 @@
     "react native google recaptcha"
   ],
   "scripts": {
-    "test": "LANG='en_US.UTF-8' jest",
+    "test": "LANG=\"en_US.UTF-8\" jest",
     "test:watch": "yarn test --watchAll",
     "prebuild": "yarn test && yarn lint && rm -rf dist",
     "build": "NODE_ENV=production rollup -c --bundleConfigAsCjs",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "lint": "tsc --noEmit && eslint ./src --ext .ts,.tsx",
-    "package:install": "./prepare-package.sh --install",
-    "package:uninstall": "./prepare-package.sh --uninstall"
+    "prepare:package": "cd ./dist && mkdir dist && mv *.js *.d.ts ./dist && cp ../package.json ."
   },
   "dependencies": {
-    "react-native-webview": "^10.0.0"
+    "use-latest-callback": "^0.1.9"
   },
   "peerDependencies": {
-    "@babel/runtime": ">=7.0.0",
-    "react": ">=16.9.0",
-    "react-native": ">=0.60.0",
-    "react-native-webview": ">=10.0.0"
+    "@babel/runtime": "*",
+    "react": "*",
+    "react-native": "*",
+    "react-native-webview": ">=11.26.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
@@ -62,8 +61,8 @@
     "metro-react-native-babel-preset": "^0.73.3",
     "prettier": "^2.8.0",
     "react": "^18.2.0",
-    "react-native": "^0.70.6",
-    "react-native-webview": "^10.0.0",
+    "react-native": "^0.72.7",
+    "react-native-webview": "^11.26.1",
     "react-test-renderer": "^18.2.0",
     "rollup": "^3.5.0",
     "rollup-plugin-dts": "^5.0.0",

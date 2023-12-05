@@ -45,7 +45,34 @@ export const INVALID_LANG_CODES = [
   'en-'
 ]
 
-export const INVALID_DOMAINS = ['', 'www', 'w', 'x.c']
+export const VALID_DOMAINS = [
+  // without www
+  'domain.com',
+  'domain.co',
+  // with www
+  'www.domain.com',
+  'www.domain.co',
+  // with port
+  'domain.com:80',
+  'domain.com:8081',
+  'domain.co:80',
+  'domain.co:8081',
+  // with port and www
+  'www.domain.com:80',
+  'www.domain.com:8081',
+  'www.domain.co:80',
+  'www.domain.co:8081'
+]
+
+export const INVALID_DOMAINS = [
+  '',
+  'www',
+  'w',
+  'x.c',
+  'domain.com:',
+  'domain.com:1',
+  'domain.com:a'
+]
 
 export const VISIBLE_SIZES: GoogleRecaptchaSize[] = [
   GoogleRecaptchaSize.NORMAL,

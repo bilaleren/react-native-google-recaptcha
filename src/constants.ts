@@ -17,3 +17,7 @@ export enum GoogleRecaptchaActionName {
   GET_PRICE = 'GET_PRICE',
   PLAY_SONG = 'PLAY_SONG'
 }
+
+export const DEFAULT_GSTATIC_DOMAIN = 'www.gstatic.com'
+
+export const DEFAULT_RECAPTCHA_DOMAIN = 'www.google.com'

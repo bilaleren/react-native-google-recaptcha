@@ -1,9 +1,14 @@
 import type { GoogleRecaptchaBaseProps } from './types'
-import { GoogleRecaptchaSize, GoogleRecaptchaTheme } from './constants'
+import {
+  GoogleRecaptchaSize,
+  GoogleRecaptchaTheme,
+  DEFAULT_GSTATIC_DOMAIN,
+  DEFAULT_RECAPTCHA_DOMAIN
+} from './constants'
 
 const SITE_KEY_PATTERN = /^6[a-zA-Z0-9-_]{39}$/
 const LANG_PATTERN = /^([a-z]{2})(-(?!UK)[A-Z0-9]{2,3})?$/
-const DOMAIN_PATTERN = /^([a-z0-9-_]+\.)+([a-z0-9]{2,})$/i
+const DOMAIN_PATTERN = /^([a-z0-9-_]+\.)+([a-z0-9]{2,})(:[0-9]{2,})?$/i
 
 function getRecaptchaTemplate(props: GoogleRecaptchaBaseProps): string {
   const {
@@ -14,8 +19,8 @@ function getRecaptchaTemplate(props: GoogleRecaptchaBaseProps): string {
     action = '',
     hideBadge = false,
     enterprise = false,
-    gstaticDomain = 'www.gstatic.com',
-    recaptchaDomain = 'www.google.com'
+    gstaticDomain = DEFAULT_GSTATIC_DOMAIN,
+    recaptchaDomain = DEFAULT_RECAPTCHA_DOMAIN
   } = props
 
   let htmlLang = lang
@@ -49,9 +54,11 @@ function getRecaptchaTemplate(props: GoogleRecaptchaBaseProps): string {
     ? 'window.grecaptcha.enterprise'
     : 'window.grecaptcha'
 
-  const jsScript = enterprise
-    ? `<script src="https://${recaptchaDomain}/recaptcha/enterprise.js?hl=${lang}" async defer></script>`
-    : `<script src="https://${recaptchaDomain}/recaptcha/api.js?hl=${lang}" async defer></script>`
+  const scriptUrl = enterprise
+    ? `https://${recaptchaDomain}/recaptcha/enterprise.js?hl=${lang}`
+    : `https://${recaptchaDomain}/recaptcha/api.js?hl=${lang}`
+
+  const jsScript = `<script src="${scriptUrl}" async defer></script>`
 
   return `
     <!DOCTYPE html>
@@ -144,8 +151,8 @@ function getRecaptchaTemplate(props: GoogleRecaptchaBaseProps): string {
                     size,
                     theme,
                     callback: onVerify,
-                    'expired-callback': onExpire,
                     'error-callback': onError,
+                    'expired-callback': onExpire,
                 }
                 if (action) {
                     recaptchaParams.action = action;

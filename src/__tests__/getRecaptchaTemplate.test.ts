@@ -1,6 +1,7 @@
 import getRecaptchaTemplate from '../getRecaptchaTemplate'
 import {
   TEST_SITE_KEY,
+  VALID_DOMAINS,
   INVALID_DOMAINS,
   RECAPTCHA_SIZES,
   RECAPTCHA_THEMES,
@@ -9,10 +10,9 @@ import {
   RECAPTCHA_ACTIONS,
   INVALID_LANG_CODES,
   BADGE_HIDDEN_STYLE,
-  ENTERPRISE_MATCHERS,
-  CUSTOM_GSTATIC_DOMAIN,
-  CUSTOM_RECAPTCHA_DOMAIN
+  ENTERPRISE_MATCHERS
 } from './test.constants'
+import { DEFAULT_GSTATIC_DOMAIN, DEFAULT_RECAPTCHA_DOMAIN } from '../constants'
 
 describe('getRecaptchaTemplate()', () => {
   describe('prop: siteKey', () => {
@@ -174,22 +174,25 @@ describe('getRecaptchaTemplate()', () => {
   })
 
   describe('prop: gstaticDomain', () => {
-    it('the default gstaticDomain must be "www.gstatic.com"', () => {
+    it(`the default gstaticDomain must be "${DEFAULT_GSTATIC_DOMAIN}"`, () => {
       const template = getRecaptchaTemplate({
         siteKey: TEST_SITE_KEY
       })
 
-      expect(template).toContain('https://www.gstatic.com')
+      expect(template).toContain(`https://${DEFAULT_GSTATIC_DOMAIN}`)
     })
 
-    it(`gstaticDomain should be replaced with "${CUSTOM_GSTATIC_DOMAIN}"`, () => {
-      const template = getRecaptchaTemplate({
-        siteKey: TEST_SITE_KEY,
-        gstaticDomain: CUSTOM_GSTATIC_DOMAIN
-      })
+    it.each(VALID_DOMAINS)(
+      'gstaticDomain should be replaced with "%s"',
+      (domain) => {
+        const template = getRecaptchaTemplate({
+          siteKey: TEST_SITE_KEY,
+          gstaticDomain: domain
+        })
 
-      expect(template).toContain(`https://${CUSTOM_GSTATIC_DOMAIN}`)
-    })
+        expect(template).toContain(`https://${domain}`)
+      }
+    )
 
     it.each(INVALID_DOMAINS)(
       'gstaticDomain="%s" should cause an error',
@@ -205,22 +208,27 @@ describe('getRecaptchaTemplate()', () => {
   })
 
   describe('prop: recaptchaDomain', () => {
-    it('the default recaptchaDomain must be "www.google.com"', () => {
+    it(`the default recaptchaDomain must be "${DEFAULT_RECAPTCHA_DOMAIN}"`, () => {
       const template = getRecaptchaTemplate({
         siteKey: TEST_SITE_KEY
       })
 
-      expect(template).toContain('https://www.google.com/recaptcha')
+      expect(template).toContain(
+        `https://${DEFAULT_RECAPTCHA_DOMAIN}/recaptcha`
+      )
     })
 
-    it(`recaptchaDomain should be replaced with "${CUSTOM_RECAPTCHA_DOMAIN}"`, () => {
-      const template = getRecaptchaTemplate({
-        siteKey: TEST_SITE_KEY,
-        recaptchaDomain: CUSTOM_RECAPTCHA_DOMAIN
-      })
+    it.each(VALID_DOMAINS)(
+      'recaptchaDomain should be replaced with "%s"',
+      (domain) => {
+        const template = getRecaptchaTemplate({
+          siteKey: TEST_SITE_KEY,
+          recaptchaDomain: domain
+        })
 
-      expect(template).toContain(`https://${CUSTOM_RECAPTCHA_DOMAIN}/recaptcha`)
-    })
+        expect(template).toContain(`https://${domain}/recaptcha`)
+      }
+    )
 
     it.each(INVALID_DOMAINS)(
       'recaptchaDomain="%s" should cause an error',

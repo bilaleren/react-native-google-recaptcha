@@ -8,7 +8,9 @@ export type {
 export {
   GoogleRecaptchaSize,
   GoogleRecaptchaTheme,
-  GoogleRecaptchaActionName
+  GoogleRecaptchaActionName,
+  DEFAULT_GSTATIC_DOMAIN,
+  DEFAULT_RECAPTCHA_DOMAIN
 } from './constants'
 
 export type { GoogleRecaptchaToken, GoogleRecaptchaBaseProps } from './types'

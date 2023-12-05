@@ -2,14 +2,16 @@ import * as React from 'react'
 import {
   View,
   Modal,
-  StyleSheet,
   ModalProps,
+  StyleSheet,
   ActivityIndicator
 } from 'react-native'
 import WebView, {
   WebViewProps,
   WebViewMessageEvent
 } from 'react-native-webview'
+import useLatestCallback from 'use-latest-callback'
+import { GoogleRecaptchaSize } from './constants'
 import getRecaptchaTemplate from './getRecaptchaTemplate'
 import type { GoogleRecaptchaToken, GoogleRecaptchaBaseProps } from './types'
 import type { OnShouldStartLoadWithRequest } from 'react-native-webview/lib/WebViewTypes'
@@ -42,7 +44,7 @@ interface GoogleRecaptchaPostMessagePayload {
   close?: unknown
   error?: [unknown]
   expire?: unknown
-  verify?: [string | null]
+  verify?: [GoogleRecaptchaToken]
 }
 
 export interface GoogleRecaptchaProps extends GoogleRecaptchaBaseProps {
@@ -157,7 +159,7 @@ const GoogleRecaptcha = React.forwardRef<
     reject: (reason?: any) => void
   } | null>()
 
-  const invisible = size === 'invisible'
+  const invisible = size === GoogleRecaptchaSize.INVISIBLE
   const { style: webViewStyle, ...webViewOtherProps } = webViewProps
 
   if (!BASE_URL_PATTERN.test(baseUrl)) {
@@ -194,13 +196,13 @@ const GoogleRecaptcha = React.forwardRef<
     }
   }, [])
 
-  const openModal = React.useCallback(() => {
+  const openModal = useLatestCallback(() => {
     setVisible(true)
     setLoading(true)
     isClosedRef.current = false
-  }, [])
+  })
 
-  const closeModal = React.useCallback(() => {
+  const closeModal = useLatestCallback(() => {
     if (isClosedRef.current) {
       return
     }
@@ -208,24 +210,26 @@ const GoogleRecaptcha = React.forwardRef<
     isClosedRef.current = true
     setVisible(false)
     onClose?.()
-  }, [onClose])
+  })
+
+  const getToken = useLatestCallback((): Promise<GoogleRecaptchaToken> => {
+    openModal()
+    return new Promise<GoogleRecaptchaToken>((resolve, reject) => {
+      tokenRef.current = { resolve, reject }
+    })
+  })
 
   React.useImperativeHandle(
     ref,
     () => ({
       open: openModal,
       close: closeModal,
-      getToken(): Promise<GoogleRecaptchaToken> {
-        openModal()
-        return new Promise<GoogleRecaptchaToken>((resolve, reject) => {
-          tokenRef.current = { resolve, reject }
-        })
-      }
+      getToken: getToken
     }),
-    [openModal, closeModal]
+    [openModal, closeModal, getToken]
   )
 
-  const handleLoad = React.useCallback(() => {
+  const handleLoad = useLatestCallback(() => {
     const webview = webViewRef.current
 
     onLoad?.()
@@ -235,64 +239,50 @@ const GoogleRecaptcha = React.forwardRef<
     }
 
     setLoading(false)
-  }, [onLoad, invisible])
+  })
 
-  const handleMessage = React.useCallback(
-    (event: WebViewMessageEvent) => {
-      try {
-        const payload = JSON.parse(
-          event.nativeEvent.data
-        ) as GoogleRecaptchaPostMessagePayload
+  const handleMessage = useLatestCallback((event: WebViewMessageEvent) => {
+    try {
+      const payload = JSON.parse(
+        event.nativeEvent.data
+      ) as GoogleRecaptchaPostMessagePayload
 
-        if (payload.close && invisible) {
+      if (payload.close && invisible) {
+        closeModal()
+      }
+
+      if (payload.load) {
+        handleLoad()
+      }
+
+      if (payload.expire) {
+        onExpire?.()
+
+        if (closeOnExpire) {
           closeModal()
-        }
-
-        if (payload.load) {
-          handleLoad()
-        }
-
-        if (payload.expire) {
-          onExpire?.()
-
-          if (closeOnExpire) {
-            closeModal()
-          }
-        }
-
-        if (payload.error) {
-          const error = payload.error?.[0]
-
-          onError?.(error)
-          tokenRef.current?.reject?.(error)
-          closeModal()
-        }
-
-        if (payload.verify) {
-          const token = payload.verify?.[0] || null
-
-          onVerify?.(token)
-          tokenRef.current?.resolve?.(token)
-          closeModal()
-        }
-      } catch (err) {
-        tokenRef.current?.reject?.(err)
-
-        if (__DEV__) {
-          console.error('Recaptcha Error:', err)
         }
       }
-    },
-    [
-      onError,
-      onVerify,
-      onExpire,
-      invisible,
-      handleLoad,
-      closeModal,
-      closeOnExpire
-    ]
-  )
+
+      if (payload.error) {
+        const error = payload.error?.[0]
+
+        onError?.(error)
+        tokenRef.current?.reject?.(error)
+        closeModal()
+      }
+
+      if (payload.verify) {
+        const token = payload.verify?.[0]
+
+        onVerify?.(token)
+        tokenRef.current?.resolve?.(token)
+        closeModal()
+      }
+    } catch (err) {
+      onError?.(err)
+      tokenRef.current?.reject?.(err)
+    }
+  })
 
   const source = React.useMemo(
     () => ({
@@ -302,20 +292,20 @@ const GoogleRecaptcha = React.forwardRef<
     [html, baseUrl]
   )
 
-  const handleNavigationStateChange = React.useCallback(() => {
+  const handleNavigationStateChange = useLatestCallback(() => {
     const webview = webViewRef.current
 
     // prevent navigation on Android
     if (!loading && webview) {
       webview.stopLoading()
     }
-  }, [loading])
+  })
 
   const handleShouldStartLoadWithRequest: OnShouldStartLoadWithRequest =
-    React.useCallback((event) => {
+    useLatestCallback((event) => {
       // prevent navigation on iOS
       return event.navigationType === 'other'
-    }, [])
+    })
 
   const webViewStyles = React.useMemo(
     () => [styles.webView, webViewStyle],
